@@ -16,6 +16,12 @@
             description = "Port on which to listen.";
           };
 
+          useCPU = {
+            type = lib.types.bool;
+            default = false;
+            description = "Use the CPU rather than the GPU.";
+          };
+
           checkpoints = {
             type = lib.types.listOf lib.types.package;
             default = [];
@@ -74,6 +80,7 @@
                 --port ${toString options.port} \
                 --extra-model-paths-config ${extra_model_paths} \
                 --output-directory "\$HOME/ComfyUI" \
+                ${if options.useCPU then "--cpu" else ""} \
                 "\$@"
               EOF
               chmod +x $out/bin/comfyui
